@@ -13,33 +13,32 @@ var JiraApi = require('jira').JiraApi;
 module.exports = function(grunt) {
 
   grunt.registerTask('jira-create-version', 'JIRA intergration for Grunt', function() {
-    grunt.config.requires('grunt-jira.protocol', 'grunt-jira.host', 'grunt-jira.port', 'grunt-jira.user', 'grunt-jira.password', 'grunt-jira.project_key');
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
-    var version = grunt.config.get('grunt-jira.version') || grunt.package.version;
+    this.async();
+    grunt.config.requires('jira.protocol', 'jira.host', 'jira.port', 'jira.user', 'jira.password', 'jira.project_key');
+    var version = grunt.config.get('jira.version') || grunt.package.version;
     var jira = new JiraApi(
-      grunt.config.get('grunt-jira.protocol'),
-      grunt.config.get('grunt-jira.host'),
-      grunt.config.get('grunt-jira.port'),
-      grunt.config.get('grunt-jira.user'),
-      grunt.config.get('grunt-jira.password'),
+      grunt.config.get('jira.protocol'),
+      grunt.config.get('jira.host'),
+      grunt.config.get('jira.port'),
+      grunt.config.get('jira.user'),
+      grunt.config.get('jira.password'),
       '2',
       true
     );
     jira.createVersion({
-      'project': grunt.config.get('grunt-jira.project_key'),
+      'project': grunt.config.get('jira.project_key'),
       'version': version,
       'name': "Automated grunt build",
       'description': "This is an automated grunt build.",
       'released': false,
       'archived': false
-    }, function(callback) {
-      grunt.log.ok(callback);
-      grunt.log.ok("JIRA version: " + version + " has been created.");
+    }, function(err, callback) {
+      if (err) {
+        grunt.log.fail(err);
+        return;
+      } else {
+        grunt.log.ok("JIRA version: " + version + " has been created.");
+      }
     });
-
   });
-
 };
