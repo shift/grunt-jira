@@ -16,7 +16,6 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
-          require: 'coverage/blanket',
           ui: 'bdd',
         },
         src: ['test/**/*.js']
