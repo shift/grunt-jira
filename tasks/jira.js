@@ -27,10 +27,9 @@ module.exports = function(grunt) {
     );
     jira.createVersion({
       'project': grunt.config.get('jira.project_key'),
-      'version': version,
-      'name': "Automated grunt build",
+      'name': version,
       'description': "This is an automated grunt build.",
-      'released': false,
+      'released': true,
       'archived': false
     }, function(err, callback) {
       if (err) {
